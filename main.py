@@ -57,7 +57,9 @@ app = QApplication([])
 window = Window()
 form = Form()
 form.setupUi(window)
+form.tableView.setSortingEnabled(True) # разрешаем сортировку столбцов для нашего tableView
 form.tableView.setModel(Events)
+
 
 window.show()
 app.exec()
