@@ -1,24 +1,3 @@
-# Our perfect school app
-#
-# import sys
-# from PySide6.QtWidgets import QApplication, QMainWindow
-# from ui_mainwindow import Ui_MainWindow
-#
-#
-# class MainWindow(QMainWindow):
-#     def __init__(self):
-#         super(MainWindow, self).__init__()
-#         self.ui = Ui_MainWindow()
-#         self.ui.setupUi(self)
-#
-#
-# if __name__ == '__main__':
-#     app = QApplication(sys.argv)
-#
-#     window = MainWindow()
-#     window.show()
-#
-#     sys.exit(app.exec())
 
 import sys
 from PyQt6 import uic
@@ -40,17 +19,16 @@ def connect_db(db_name):
         return False
 
 
-# if not connect_db(db_name):
-#     sys.exit()
-# else:
-#     print('Соединение установлено.')
 
 connect_db(db_name)         # подключимся к нашей базе данных
+
 
 Events = QSqlTableModel()   #   Мы создали переменную Events (по имени нашей таблицы с событиями), использовали объект класса QSqlTableModel или "модель таблицы".
                             #   Эту переменную мы будем использовать ниже для заполнения объекта tableView - form.tableView.setModel(Events)
 Events.setTable('Events')   #   Сказали, что привязываем к созданному выше объекту таблицу с именем "Events"
 Events.select()             #   Далее выполняем простой селект, вытаскивая все строки
+
+# привяжем к первому комбобоксу Информацию из таблицы Students
 
 
 app = QApplication([])
