@@ -1,4 +1,4 @@
-# Загрузим созданный в дизайнере интерфейс
+# Our perfect school app
 
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow
