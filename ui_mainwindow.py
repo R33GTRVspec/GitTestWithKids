@@ -16,8 +16,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QComboBox, QDateEdit, QFrame,
-    QLabel, QPlainTextEdit, QPushButton, QSizePolicy,
-    QWidget)
+    QHeaderView, QLabel, QPushButton, QSizePolicy,
+    QTableView, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -134,9 +134,9 @@ class Ui_MainWindow(object):
         self.line_2.setLineWidth(2)
         self.line_2.setFrameShape(QFrame.HLine)
         self.line_2.setFrameShadow(QFrame.Sunken)
-        self.plainTextEdit = QPlainTextEdit(MainWindow)
-        self.plainTextEdit.setObjectName(u"plainTextEdit")
-        self.plainTextEdit.setGeometry(QRect(30, 320, 440, 100))
+        self.tableView = QTableView(MainWindow)
+        self.tableView.setObjectName(u"tableView")
+        self.tableView.setGeometry(QRect(20, 310, 461, 121))
 
         self.retranslateUi(MainWindow)
 
