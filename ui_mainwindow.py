@@ -23,7 +23,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(640, 400)
+        MainWindow.resize(640, 427)
         self.line_1 = QFrame(MainWindow)
         self.line_1.setObjectName(u"line_1")
         self.line_1.setGeometry(QRect(20, 0, 581, 16))
@@ -46,7 +46,7 @@ class Ui_MainWindow(object):
         self.comboBox_zachto.setObjectName(u"comboBox_zachto")
         self.comboBox_zachto.setGeometry(QRect(150, 200, 160, 26))
         font1 = QFont()
-        font1.setPointSize(14)
+        font1.setPointSize(15)
         self.comboBox_zachto.setFont(font1)
         self.label_student = QLabel(MainWindow)
         self.label_student.setObjectName(u"label_student")
@@ -100,6 +100,7 @@ class Ui_MainWindow(object):
         self.dateEdit = QDateEdit(MainWindow)
         self.dateEdit.setObjectName(u"dateEdit")
         self.dateEdit.setGeometry(QRect(100, 50, 110, 22))
+        self.dateEdit.setFont(font1)
         self.dateEdit.setCalendarPopup(True)
         self.dateEdit.setCurrentSectionIndex(0)
         self.dateEdit.setDate(QDate(2023, 1, 1))
