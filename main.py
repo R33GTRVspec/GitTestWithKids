@@ -142,12 +142,12 @@ form.dateEdit.setDateTime(QDateTime.currentDateTime())
 print(save_current_values_in_comboboxes())
 
 # просто проверяем, что мы умеем отслеживать нажатие кнопки
-button_update = QtWidgets.QPushButton('pb_writeToDB')
-if button_update.clicked.connect(self.on):
-    update()
-    print(save_current_values_in_comboboxes())
-else:
-    print('not saved')
+# button_update = QtWidgets.QPushButton('pb_writeToDB')
+# if button_update.clicked.connect(self.on):
+#     update()
+#     print(save_current_values_in_comboboxes())
+# else:
+#     print('not saved')
 
 w.show()
 app.exec()
