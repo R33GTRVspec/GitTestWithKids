@@ -7,7 +7,7 @@ from PyQt6.QtCore import QDate, QDateTime, QTime, Qt
 
 Form, Window = uic.loadUiType('OurSchoolDiaryUi.ui')
 
-db_name = 'OurSchoolDiary.sqlite'  # задаем путь и имя к нашей базе данных
+db_name = 'databases/OurSchoolDiary.sqlite'  # задаем путь и имя к нашей базе данных
 
 
 # напишем функцию для подключения к базе данных
