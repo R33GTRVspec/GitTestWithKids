@@ -35,6 +35,12 @@ class MainWindow(QDialog):
         self.comboBox_grade.addItems(self.populate_grades_from_grades_table())
         self.comboBox_zachto.addItems(self.populate_jobtypes_from_jobtypes_table())
 
+        # проверим, что там в комбобоксах
+        print(self.save_current_values_in_comboboxes())
+
+        # поажимаем единственный пашбаттон и повыываем какую-нибудь функцию с печатью в консоль
+        # self.pb_writeToDB(self.btnstate())
+
     # Функция для загрузки в окно программы сведений из таблицы событий в БД
     def tableView_loaddata(self):
         db_name = 'databases/OurSchoolDiary.sqlite'  # задаем путь и имя к нашей базе данных
