@@ -59,6 +59,7 @@ def populate_students_from_students_table():
     print(list_of_strings)
     return list_of_strings
 
+
 # Для предметов. Возвращает строку со списком значений
 def populate_lessons_from_lessons_table():
     cnn = sqlite3.connect(db_name)
@@ -69,6 +70,7 @@ def populate_lessons_from_lessons_table():
     cnn.close()
     print(list_of_strings)
     return list_of_strings
+
 
 # Для оценок. Возвращает строку со списком значений
 def populate_grades_from_grades_table():
@@ -81,6 +83,7 @@ def populate_grades_from_grades_table():
     print(list_of_strings)
     return list_of_strings
 
+
 # Для типов работы за что оценка. Возвращает строку со списком значений
 def populate_jobtypes_from_jobtypes_table():
     cnn = sqlite3.connect(db_name)
@@ -92,9 +95,27 @@ def populate_jobtypes_from_jobtypes_table():
     print(list_of_strings)
     return list_of_strings
 
-# Создадим функцию, которая будет записывать значения в БД
-# def write_new_event_to_db():
 
+# Создадим функцию, которая будет записывать текущие значения в комбобоксах в переменную
+def save_current_values_in_comboboxes():
+    # создаем список в порядке ('Ученик', 'Предмет', 'Оценка', 'Тип задания')
+    current_comboboxes_values = (
+    (form.comboBox_students.currentText()), (form.comboBox_subject.currentText()), (form.comboBox_grade.currentText()),
+    (form.comboBox_zachto.currentText()))
+    return current_comboboxes_values
+
+# def refresh_current_combobox_values(self):
+#     button = QPushButton('Toggle Me')
+#     button.setCheckable(True)
+#     button.clicked.connect(self.on_toggle)
+
+# def on_toggle(self.checked):
+#     print(checked)
+
+
+def update(self):
+    save_current_values_in_comboboxes()
+    print(save_current_values_in_comboboxes())
 
 
 app = QApplication([])
@@ -116,6 +137,17 @@ form.comboBox_zachto.addItems(populate_jobtypes_from_jobtypes_table())
 
 # установим текущую дату
 form.dateEdit.setDateTime(QDateTime.currentDateTime())
+
+# просто проверим, что функция записи значений из комбобоксов сделала список нужных нам данных
+print(save_current_values_in_comboboxes())
+
+# просто проверяем, что мы умеем отслеживать нажатие кнопки
+button_update = QtWidgets.QPushButton('pb_writeToDB')
+if button_update.clicked.connect(self.on):
+    update()
+    print(save_current_values_in_comboboxes())
+else:
+    print('not saved')
 
 w.show()
 app.exec()
