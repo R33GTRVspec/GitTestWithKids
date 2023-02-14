@@ -92,6 +92,10 @@ def populate_jobtypes_from_jobtypes_table():
     print(list_of_strings)
     return list_of_strings
 
+# Создадим функцию, которая будет записывать значения в БД
+# def write_new_event_to_db():
+
+
 
 app = QApplication([])
 w = Window()
