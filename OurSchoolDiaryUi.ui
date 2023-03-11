@@ -294,7 +294,7 @@
    </attribute>
    <column>
     <property name="text">
-     <string>№</string>
+     <string>ID</string>
     </property>
    </column>
    <column>
@@ -322,6 +322,19 @@
      <string>Тип задания</string>
     </property>
    </column>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>180</y>
+     <width>200</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
   </widget>
  </widget>
  <resources/>

@@ -2,8 +2,9 @@ import sys
 import sqlite3
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6 import uic
-from PyQt6.QtSql import *
-from PyQt6.QtWidgets import QDialog, QApplication, QDateTimeEdit
+from PyQt6.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel, QSqlRelationalTableModel
+from PyQt6.QtWidgets import QDialog, QApplication, QMainWindow, QPushButton, QLabel, QVBoxLayout, QWidget, QComboBox, \
+    QTableView
 from PyQt6.QtCore import QDate, QTime, QDateTime, Qt
 
 
@@ -39,7 +40,20 @@ class MainWindow(QDialog):
         print(self.save_current_values_in_comboboxes())
 
         # поажимаем единственный пашбаттон и повыываем какую-нибудь функцию с печатью в консоль
-        # self.pb_writeToDB(self.btnstate())
+        #        self.pb_writeToDB(self.btnstate())
+
+        # поажимаем более осознанно на единственный пашбаттон и дернем функцию записи в БД
+        self.pb_writeToDB.clicked.connect(self.eventSaving)
+        self.pb_writeToDB.clicked.connect(self.tableView_loaddata)
+
+        # Create a connection to the SQLite database
+        self.db = QSqlDatabase.addDatabase("QSQLITE")
+        self.db.setDatabaseName('databases/OurSchoolDiary.sqlite')
+        if not self.db.open():
+            self.label.setText("Нет связи с базой данных")
+        else:
+            self.label.setText("База данных подключена")
+            # Create a model to display the data in the TableView
 
     # Функция для загрузки в окно программы сведений из таблицы событий в БД
     def tableView_loaddata(self):
@@ -47,7 +61,7 @@ class MainWindow(QDialog):
         cnn = sqlite3.connect(db_name)
         c = cnn.cursor()
         sqlquery = """
-        SELECT  Event_id AS "№", Date AS "Дата",
+        SELECT  Event_id AS "ID", Date AS "Дата",
         (SELECT StudentName FROM Students WHERE Student_id = Events.Student) AS "Ученик",
         (SELECT Lesson FROM Lessons WHERE Lesson_id = Events.Lesson) AS "Предмет",
         (SELECT Grade FROM Grades WHERE Grade_id = Events.Grade) AS "Оценка",
@@ -67,21 +81,20 @@ class MainWindow(QDialog):
             self.tableWidget.setItem(tablerow, 5, QtWidgets.QTableWidgetItem(row[5]))
             tablerow += 1
 
-    db_name = 'databases/OurSchoolDiary.sqlite'  # задаем путь и имя к нашей базе данных
+    # задаем путь и имя к нашей базе данных
+    db_name = 'databases/OurSchoolDiary.sqlite'
 
-    # напишем функцию для подключения к базе данных
-    def connect_db(db_name):
-        db = QSqlDatabase.addDatabase(
-            'QSQLITE')  # Переменная для определения драйвера типа базы данных. В нашем случае это QSQLITE
-        db.setDatabaseName(db_name)  # Переменная которую мы получаем на вход для этой функции
-        if not db.open():  # Проверка на подключение. Выведет в консоль ошибку и выйдет из приложения, если не подключится
-            print('Нет соединения с базой данных!')
-            sys.exit()
-            return False
+    # запасная функция для подключения к базе данных
+    # def connect_db(db_name):
+    #     db = QSqlDatabase.addDatabase(
+    #         'QSQLITE')  # Переменная для определения драйвера типа базы данных. В нашем случае это QSQLITE
+    #     db.setDatabaseName(db_name)  # Переменная которую мы получаем на вход для этой функции
+    #     if not db.open():  # Проверка на подключение. Выведет в консоль ошибку и выйдет из приложения, если не подключится
+    #         print('Нет соединения с базой данных!')
+    #         sys.exit()
+    #         return False
 
-    # Создадим функции, которые заполняют комбобоксы "Ученик", "Предмет", "Оценка за" и
-    # "Оценка" значениями из соответствующих таблиц в БД
-
+    # Создадим функции, которые заполняют комбобоксы значениями из соответствующих таблиц в БД
     # Для студентов. Возвращает строку со списком значений
     def populate_students_from_students_table(self):
         db_name = 'databases/OurSchoolDiary.sqlite'  # задаем путь и имя к нашей базе данных
@@ -120,7 +133,7 @@ class MainWindow(QDialog):
 
     # Для типов работы за что оценка. Возвращает строку со списком значений
     def populate_jobtypes_from_jobtypes_table(self):
-        db_name = 'databases/OurSchoolDiary.sqlite'  # задаем путь и имя к нашей базе данных
+        db_name = 'databases/OurSchoolDiary.sqlite'
         cnn = sqlite3.connect(db_name)
         c = cnn.cursor()
         c.execute("SELECT JobTypeName FROM JobTypes")
@@ -138,6 +151,63 @@ class MainWindow(QDialog):
             (self.comboBox_grade.currentText()),
             (self.comboBox_zachto.currentText()))
         return current_comboboxes_values
+
+    # Создадим функцию для записи выбранных значений в базу данных
+    def eventSaving(self):
+        # Создаем отдельные переменные с текущими значениями из комбобоксов
+        student = self.comboBox_students.currentText()
+        subject = self.comboBox_subject.currentText()
+        grade = self.comboBox_grade.currentText()
+        zachto = self.comboBox_zachto.currentText()
+        date = self.dateEdit.date().toString("dd-MM-yyyy")
+
+        # создаем переменную-контейнер для написания запросов
+        query = QSqlQuery()
+
+        # подготовка ID нужного нам объекта для записи в таблицу
+        # студенты
+        query.prepare("SELECT Student_id FROM Students WHERE StudentName=:student")
+        query.bindValue(":student", student)
+        query.exec()
+        query.first()
+        student_id = query.value(0)
+        # предмет
+        query.prepare("SELECT Lesson_id FROM Lessons WHERE Lesson=:subject")
+        query.bindValue(":subject", subject)
+        query.exec()
+        query.next()
+        subject_id = query.value(0)
+        # оценка
+        query.prepare("SELECT Grade_id FROM Grades WHERE Grade=:grade")
+        query.bindValue(":grade", grade)
+        query.exec()
+        query.next()
+        grade_id = query.value(0)
+        # за что
+        query.prepare("SELECT JobType_ID FROM JobTypes WHERE JobTypeName=:zachto")
+        query.bindValue(":zachto", zachto)
+        query.exec()
+        query.next()
+        zachto_id = query.value(0)
+
+        # Вставляем Значения в таблицу Events, используя первичные ключи из дочерних таблиц в качестве внешних ключей
+        query.prepare(
+            "INSERT INTO Events (Date, Student, Lesson, Grade, JobType) VALUES ( :date, :student, :subject, :grade, :zachto)")
+        query.bindValue(":date", date)
+        query.bindValue(":student", student_id)
+        query.bindValue(":subject", subject_id)
+        query.bindValue(":grade", grade_id)
+        query.bindValue(":zachto", zachto_id)
+        query.exec()
+        query.finish()
+
+        # Проверим, получилось ли записать данные
+        if query.lastError().isValid():
+            # если LastError выполненный для нашего query вернул хоть какую-то ошибку, то isValid вернет True и тогда:
+            self.label.setText("Не могу сохранить данные")
+        else:
+            # если LastError не вернул никаких ошибок, то isValid вернет False и тогда:
+            self.label.setText("Данные сохранены")
 
 
 app = QtWidgets.QApplication(sys.argv)
