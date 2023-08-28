@@ -6,7 +6,7 @@ from PyQt6.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel, QSqlRelationalT
 from PyQt6.QtWidgets import QDialog, QApplication, QMainWindow, QPushButton, QLabel, QVBoxLayout, QWidget, QComboBox, \
     QTableView
 from PyQt6.QtCore import QDate, QTime, QDateTime, Qt
-
+#some text
 
 # в этом классе создадим модель нашего приложения
 class MainWindow(QDialog):
